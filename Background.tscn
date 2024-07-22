@@ -1,0 +1,44 @@
+[gd_scene load_steps=5 format=3 uid="uid://cdyhegfj3eybj"]
+
+[ext_resource type="Script" path="res://Level.gd" id="1_covob"]
+[ext_resource type="PackedScene" uid="uid://dctcehelc4sv0" path="res://piano.tscn" id="1_tg6jl"]
+[ext_resource type="PackedScene" uid="uid://bdvkdv77fslji" path="res://addons/midi/ADSR.tscn" id="3_gb6ci"]
+[ext_resource type="PackedScene" uid="uid://cuyd1qv0pn26e" path="res://addons/midi/MidiPlayer.tscn" id="4_vp4kh"]
+
+[node name="Level" type="Control" node_paths=PackedStringArray("piano")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_covob")
+piano = NodePath("Piano")
+
+[node name="background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.0013, 1.0013)
+color = Color(0.190762, 0.190762, 0.190762, 1)
+
+[node name="Piano" parent="." instance=ExtResource("1_tg6jl")]
+layout_mode = 1
+offset_left = 319.0
+offset_top = 171.0
+offset_right = 319.0
+offset_bottom = 171.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.479191, 0.40216)
+
+[node name="ADSR" parent="." instance=ExtResource("3_gb6ci")]
+
+[node name="MidiPlayer" parent="." instance=ExtResource("4_vp4kh")]
+file = "res://Tetris - Tetris Main Theme.mid"
+playing = true
+
+[connection signal="midi_event" from="MidiPlayer" to="." method="_on_midi_player_midi_event"]
