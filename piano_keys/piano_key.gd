@@ -36,9 +36,11 @@ func play_sound():
 
 
 func activate():
-	key.color = (Color.YELLOW + start_color) / 2
+	key.color = (Color.GREEN + start_color) / 2
+	#TODO: check if it is a playing mode or smtn
 	color_timer.start()
 	play_sound()
+	print("Key Pressed: ", key.get_parent().name)
 	self.emit_signal("key_pressed", key)
 	
 
