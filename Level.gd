@@ -18,33 +18,33 @@ func _process(delta: float) -> void:
 
 
 func _on_midi_player_midi_event(channel: Variant, event: Variant) -> void:
-	if channel.number == 0:
-		if "note" in event:
-			var key : PianoKey = piano.piano_key_dict[event.note]
-			print("note: ", event.note)
-			match event.type:
-				SMF.MIDIEventType.note_off:
-					pass
-					#key.deactivate()
-				SMF.MIDIEventType.note_on:
-					key.play_sound()
-					queue.push_back(key.get_child(0))
-					#print("Queued: ", key)
-					$MidiPlayer.playing = false
+	if channel.number == 0 and "note" in event:
+		var key : PianoKey = piano.piano_key_dict[event.note]
+		match event.type:
+			SMF.MIDIEventType.note_off:
+				pass
+				#key.deactivate()
+			SMF.MIDIEventType.note_on:
+				key.play_sound()
+				queue.push_back(key.get_child(0))
+				#print("Queued: ", key)
+				$MidiPlayer.playing = false
 
 
 func _on_note_played(note: ColorRect) -> void:
 	if queue:
-		#print("Note: ", note.get_parent().name, " | Queue: ", queue[0].get_parent().name)
 		if note == queue[0]:
-			print("Correct")
+			#print("Correct")
 			queue.pop_front()
 			$MidiPlayer.playing = true
+			note.parent.color_timer.start()
+			# Clear incorrect queue
 			for i in incorrect:
 				i.parent.deactivate()
+			incorrect = []
 		else:
-			print("Incorrect")
-			note.parent.color_timer.stop()
+			#print("Incorrect")
+			#note.parent.color_timer.set_paused(true)
 			note.color = (Color.RED + note.parent.start_color) / 2
 			incorrect.push_back(note)
 
