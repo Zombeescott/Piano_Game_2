@@ -2,29 +2,37 @@ extends Control
 
 
 @onready var midi_player : MidiPlayer = $MidiPlayer
+@onready var start_timer : Timer = $background/StartTimer
+@onready var start_label : RichTextLabel = $background/StartTimer/TimerLabel
+@onready var time_label : RichTextLabel = $background/TimeLabel
 
 @export var piano : ColorRect
 @export var song: String
-#@export var song: String = "res://Tetris - Tetris Main Theme.mid"
 
 var level_select: PackedScene = load("res://level_select.tscn")
 var queue: Array = []
 var incorrect: Array = []
+var elapsed_time: float
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	$StartTimer.start()
+	start_timer.start()
 	if song:
 		midi_player.file = song
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if $StartTimer/TimerLabel.text == "0":
-		$StartTimer/TimerLabel.hide()
-	elif $StartTimer/TimerLabel.text != str(ceil($StartTimer.time_left)):
-		$StartTimer/TimerLabel.text = str(ceil($StartTimer.time_left))
+	if start_label.text == "0":
+		# Hide label once not needed
+		if elapsed_time == 0:
+			start_label.hide()
+		elapsed_time += delta
+		time_label.text = str(round(elapsed_time * 100) / 100.0)
+		
+	elif start_label.text != str(ceil(start_timer.time_left)):
+		start_label.text = str(ceil(start_timer.time_left))
 
 
 func _on_midi_player_midi_event(channel: Variant, event: Variant) -> void:
