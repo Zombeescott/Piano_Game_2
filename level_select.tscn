@@ -1,0 +1,48 @@
+[gd_scene load_steps=2 format=3 uid="uid://bxyckvp7gaiu6"]
+
+[ext_resource type="PackedScene" uid="uid://crd84l4ibs0v5" path="res://song.tscn" id="1_pg6lx"]
+
+[node name="Level Select" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.259294, 0.259294, 0.259294, 1)
+
+[node name="Song Selection" type="ScrollContainer" parent="."]
+layout_mode = 0
+offset_left = 861.0
+offset_top = 62.0
+offset_right = 1161.0
+offset_bottom = 562.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Song Selection"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Tetris" parent="Song Selection/VBoxContainer" instance=ExtResource("1_pg6lx")]
+layout_mode = 2
+text = "Tetris"
+song_file = "res://Tetris - Tetris Main Theme.mid"
+
+[node name="Twinkle" parent="Song Selection/VBoxContainer" instance=ExtResource("1_pg6lx")]
+layout_mode = 2
+text = "Twinkle"
+song_file = "res://no name.mid"
+
+[node name="TabContainer" type="TabContainer" parent="."]
+layout_mode = 0
+offset_left = 85.0
+offset_top = 59.0
+offset_right = 485.0
+offset_bottom = 559.0

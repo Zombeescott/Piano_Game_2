@@ -1,0 +1,92 @@
+[gd_scene load_steps=5 format=3 uid="uid://cdyhegfj3eybj"]
+
+[ext_resource type="Script" path="res://Level.gd" id="1_hpvl1"]
+[ext_resource type="PackedScene" uid="uid://dctcehelc4sv0" path="res://piano.tscn" id="2_c8vv0"]
+[ext_resource type="PackedScene" uid="uid://bdvkdv77fslji" path="res://addons/midi/ADSR.tscn" id="3_rykky"]
+[ext_resource type="PackedScene" uid="uid://cuyd1qv0pn26e" path="res://addons/midi/MidiPlayer.tscn" id="4_wvk0o"]
+
+[node name="Level" type="Control" node_paths=PackedStringArray("piano")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hpvl1")
+piano = NodePath("background/Piano")
+
+[node name="background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.0013, 1.0013)
+color = Color(0.190762, 0.190762, 0.190762, 1)
+
+[node name="Piano" parent="background" instance=ExtResource("2_c8vv0")]
+layout_mode = 1
+offset_left = 67.9117
+offset_top = 188.755
+offset_right = 1189.91
+offset_bottom = 848.755
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.476326, 0.300615)
+
+[node name="Buttons" type="VBoxContainer" parent="background"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.571
+offset_top = -254.086
+offset_right = 199.429
+offset_bottom = -174.086
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Current Note" type="Button" parent="background/Buttons"]
+layout_mode = 2
+text = "Current Note"
+
+[node name="Reference Note" type="Button" parent="background/Buttons"]
+layout_mode = 2
+text = "Reference Note: C3"
+
+[node name="StartTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="TimerLabel" type="RichTextLabel" parent="StartTimer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -42.0
+offset_top = -97.5
+offset_right = 42.0
+offset_bottom = 97.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
+theme_override_font_sizes/normal_font_size = 141
+text = "3"
+
+[node name="ADSR" parent="." instance=ExtResource("3_rykky")]
+
+[node name="MidiPlayer" parent="." instance=ExtResource("4_wvk0o")]
+file = "res://no name.mid"
+
+[connection signal="pressed" from="background/Buttons/Current Note" to="." method="_on_current_note_pressed"]
+[connection signal="pressed" from="background/Buttons/Reference Note" to="." method="_on_reference_note_pressed"]
+[connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]
+[connection signal="finished" from="MidiPlayer" to="." method="_on_midi_player_finished"]
+[connection signal="midi_event" from="MidiPlayer" to="." method="_on_midi_player_midi_event"]

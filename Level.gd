@@ -4,8 +4,8 @@ extends Control
 @onready var midi_player : MidiPlayer = $MidiPlayer
 
 @export var piano : ColorRect
-#@export var song: String
-@export var song: String = "res://Tetris - Tetris Main Theme.mid"
+@export var song: String
+#@export var song: String = "res://Tetris - Tetris Main Theme.mid"
 
 var level_select: PackedScene = load("res://level_select.tscn")
 var queue: Array = []
@@ -16,8 +16,7 @@ var incorrect: Array = []
 func _ready() -> void:
 	$StartTimer.start()
 	if song:
-		pass
-		#midi_player.file = song
+		midi_player.file = song
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
